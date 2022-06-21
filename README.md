@@ -197,7 +197,7 @@ Now for the interesting part. Follow the instructions in the above guide to enab
           env: SPECTACLES_SECRET
     ```
     
-*   **steps:** defines the steps the build process should take. In this case, we just have one step - running the Docker image we build and published earlier. There’s a commented out step before that, too. That one gives you the option to build the docker image on each run if you prefer. It’s not at all necessary since the image will always be exactly the same since it’s not pulling any code from the repo as configured. Pre-building and storing the image saves some time on the validation.
+*   **steps:** defines the steps the build process should take. In this case, we just have one step - running the Docker image we build and published earlier.
     
     *   **name:** We’re using the name of the image we created and registered in artifact registry earlier.
         
