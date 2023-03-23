@@ -105,10 +105,8 @@ I have the Dockerfile and requirements files for this example stored in a public
     COPY requirements-test.txt ./
     
     RUN pip install --no-cache-dir -r requirements.txt
-    RUN pip install --no-cache-dir -r requirements-test.txt
-    RUN pip install --no-cache-dir -r requirements-composer.txt
     
-    CMD ["sh", "-c", "spectacles sql --base-url https://4mile.looker.com --client-id $SPECTACLES_ID --client-secret $SPECTACLES_SECRET --verbose --project dana_test --branch $_HEAD_BRANCH --incremental"]
+    CMD ["sh", "-c", "spectacles connect --base-url https://4mile.looker.com --client-id $SPECTACLES_ID --client-secret $SPECTACLES_SECRET --verbose]
     ```
     
     *   **FROM** tells docker to build the image starting from the python:3.10 image, which is a minimal Linux image with python 3.10 installed.
@@ -119,7 +117,7 @@ I have the Dockerfile and requirements files for this example stored in a public
         
     *   **RUN pip install** installs the requirements specified in our files.
         
-    *   **CMD** specifies a default command to run when the container starts up. In this case, we are telling docker that when the container runs, it should run a sh shell, and in that shell, run the spectacles test from earlier.  
+    *   **CMD** specifies a default command to run when the container starts up. In this case, we are just specifying a test connection command. We'll call the Docker image and use a bash entry point to run the command we want when we run this image as part of the Cloud Build process.
           
         This command should look familiar from earlier, however you’ll notice we’re passing API credentials with flags rather than from a yaml file. The --verbose flag is also specified to get more information back in case the build fails - for example API response codes etc.  
           
@@ -272,8 +270,6 @@ Next Steps
 ----------
 
 This is a very basic implementation - we built a very simple Docker image to run one test in one specific scenario. Implementing this in production, you might want to:
-
-*   Modify the docker image so Spectacles is run from a shell script built into the image that accepts some environment variables so you can invoke different tests from the same Docker image
     
 *   Specify versions for the Looker SDK and Spectacles in the requirements.txt file and rebuild the image
     
